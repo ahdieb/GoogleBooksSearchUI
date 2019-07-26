@@ -1,21 +1,64 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<ngx-ui-loader></ngx-ui-loader>
 
-<router-outlet></router-outlet>
+
+<div class="container"
+     infiniteScroll
+     [infiniteScrollDistance]="scrollDistance"
+     [infiniteScrollUpDistance]="scrollUpDistance"
+     [infiniteScrollThrottle]="throttle"
+     (scrolled)="onScrollpendingCards()">
+  <div class="input-group md-form form-sm form-2 pl-0 search-input">
+    <input class="form-control my-0 py-1 red-border"
+           type="text"
+           placeholder="Search"
+           aria-label="Search"
+           [formControl]="searchInput">
+    <div class="input-group-append">
+      <span class="input-group-text red lighten-3"
+            id="basic-text1">
+        <i class="fa fa-search text-grey"
+           aria-hidden="true"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-4 col-md-6 col-12"
+         *ngFor="let book of books">
+      <div class="card-container">
+        <div class="card-header">
+          {{book?.volumeInfo?.title}}
+        </div>
+        <div class="card-body">
+          <div class="image-container">
+            <img [src]="book?.volumeInfo?.imageLinks.smallThumbnail"
+                 alt="Book Image"
+                 *ngIf="book?.volumeInfo?.imageLinks?.smallThumbnail">
+            <img src="/assets/images/default-book-image.png"
+                 alt="Default Image"
+                 *ngIf="!book?.volumeInfo?.imageLinks?.smallThumbnail">
+          </div>
+          <div class="card-details">
+            <div class="title"
+                 *ngIf="book?.volumeInfo?.publisher"><span>Publisher: </span> {{book?.volumeInfo?.publisher}}</div>
+            <div class="title"
+                 *ngIf="!book?.volumeInfo?.publisher"><span>Publisher: </span> Unknown</div>
+            <div class="title"
+                 *ngIf="book?.volumeInfo?.publishedDate"><span>published Date: </span>
+              {{book?.volumeInfo?.publishedDate}}</div>
+            <div class="title"
+                 *ngIf="!book?.volumeInfo?.publishedDate"><span>published Date: </span>
+              {{book?.volumeInfo?.publishedDate}}</div>
+          </div>
+        </div>
+        <div class="card-footer"
+             (click)="openDialog(book)">
+          <div class="show-more">View Details</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="books && books.length == 0" class="No-Result">
+    No Results Found
+  </div>
+</div>

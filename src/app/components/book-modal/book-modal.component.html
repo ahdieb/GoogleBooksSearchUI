@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>{{data?.volumeInfo?.title}} </h1>
+<div mat-dialog-content
+     *ngIf="data?.volumeInfo?.description">
+    {{data?.volumeInfo?.description}}
+</div>
+<div mat-dialog-content
+     *ngIf="!data?.volumeInfo?.description">
+    No Details Found
+</div>
